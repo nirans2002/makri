@@ -1,0 +1,13 @@
+interfacing dht sensor
+
+https://randomnerdtutorials.com/raspberry-pi-dht11-dht22-python/
+
+install the required libraries 
+python3 -m pip install adafruit-circuitpython-dht
+
+the hull conditions are published to topic hull_conditions of msg type 
+custom msg 
+
+rovContorller listen to the /cmd_vel and  
+takes the linear.x and angular.z values
+# we can also take the pitch 
