@@ -36,20 +36,21 @@ class ImuControlNode(Node):
 
     def timer_callback(self):
         self.data = self.read_sensor_data()
+        print(self.data)
         self.curr_time = time.monotonic_ns()
         self.dt = (self.curr_time - self.prev_time) / 1000000000
     
-        self.tilt_x, self.tilt_y, self.tilt_z = self.calculate_tilt_angles(self.data[0])
-        self.pitch, self.roll = self.complementary_filter(self.pitch, self.roll, self.data[0], self.dt)
+        # self.tilt_x, self.tilt_y, self.tilt_z = self.calculate_tilt_angles()
+        # self.pitch, self.roll = self.complementary_filter(self.pitch, self.roll, self.data[0], self.dt)
     
-        self.prev_time = self.curr_time
-        time.sleep(0.01)   
+        # self.prev_time = self.curr_time
+        # time.sleep(0.01)   
             # Compute error
-        self.error = -self.pitch  # Desired pitch is zero
+        # self.error = -self.pitch  # Desired pitch is zero
 
          
         # Compute PID control output
-        self.output = self.compute_pid_output(self.error, self.dt)
+        # self.output = self.compute_pid_output(self.error, self.dt)
         
         # Apply control output (e.g., adjust motor speed or servo position)
         # Example: motor_speed = base_speed + output
@@ -58,15 +59,15 @@ class ImuControlNode(Node):
         # print("Pitch: {:.2f} PID: {:.2f}".format(pitch,output))
         # time.sleep(0.09)
         
-        self.mapped_value = self.linear_map(self.output, -50,0,100,0)
+        # self.mapped_value = self.linear_map(self.output, -50,0,100,0)
         # print("Mapped value:", mapped_value)
            #throttle = int(speed * 1.8)  # Map speed (0-100) to throttle (0-180)
         # kit.servo[0].angle = mapped_value
         # print(f"Speed set to {speed}%")
-        msg = Thruster()
-        msg.thruster_f = self.mapped_value
-        self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg.thruster_f)
+#         msg = Thruster()
+#         msg.thruster_f = self.mapped_value
+#         self.publisher_.publish(msg)
+        # self.get_logger().info('Publishing: "%s"' % msg.thruster_f)
 
     
 
@@ -80,6 +81,7 @@ class ImuControlNode(Node):
 
         # Read temp
         self.temperature = mpu6050.get_temp()
+
 
         # return self.accelerometer_data, self.gyroscope_data, self.temperature
 

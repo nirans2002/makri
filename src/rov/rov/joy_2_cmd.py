@@ -9,9 +9,9 @@ def joy_2_cmd(msg, publisher):
 
     # Create a Twist message from the Joy message.
     twist_msg = Twist()
-    twist_msg.linear.x = abs(1.5 * msg.axes[1])  # Map the y-axis of the joystick to the linear velocity.
-    twist_msg.angular.y = abs(2.0 * msg.axes[4])  # Map the x-axis of the joystick to the angular velocity.
-    twist_msg.angular.z = 2.0 * msg.axes[0]# Map the x-axis of the joystick to the angular velocity.
+    twist_msg.linear.x = 2.0 * msg.axes[1]  # Map the y-axis of the joystick to the linear velocity.
+    twist_msg.angular.y = 2.0 * msg.axes[4]  # Map the x-axis of the joystick to the angular velocity.
+    twist_msg.angular.z = 2.0 * msg.axes[0]  # Map the x-axis of the joystick to the angular velocity.
 
     # Publish the Twist message to the /skidbot/cmd_vel topic.
     publisher.publish(twist_msg)

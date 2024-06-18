@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROV Control</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            display: flex;
+            justify-content: space-between;
+            height: 100vh;
+        }
+        .stat{
+            margin: 16px;
+        }
+        .control-container,
+        .video-container {
+            flex: 1;
+            /* display: flex; */
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            border: #0056b3;
+            border-width: 3px;
+            /* background-color: black; */
+        }
+        .joystick {
+            position: relative;
+            width: 80%;
+            height: 80%;
+            background-color: #cccccc;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            /* overflow: hidden; */
+            margin: 50px;
+        }
+        .button {
+            position: absolute;
+            width: 5rem;
+            height: 5rem;
+            background-color: #007bff;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            color: #ffffff;
+            transition: background-color 0.3s ease;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        #forward {
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #backward {
+            bottom: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #left {
+            top: 50%;
+            left: 10%;
+            transform: translateY(-50%);
+        }
+        #right {
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%);
+        }
+        #pitch_up {
+            top: 20%;
+            left: 20%;
+            transform: translate(-50%, -50%);
+        }
+        #pitch_down {
+            bottom: 20%;
+            left: 20%;
+            transform: translate(-50%, 50%);
+        }
+        #yaw_left {
+            top: 20%;
+            right: 20%;
+            transform: translate(50%, -50%);
+        }
+        #yaw_right {
+            top: 20%;
+            right: 20%;
+            transform: translate(50%, -50%) rotate(180deg);
+        }
+        #video {
+            width: 50%;
+            height: 50%;
+            object-fit: cover;
+            border: #0056b3;
+            border-width: 3px;
+        }
+    </style>
+</head>
+<body>
+    <center>
+    <h2>ROV Control interface</h2>
+    </center>
+    <div class="container_">
+        <!-- <div class="control-container">
+            <div class="joystick">
+                <div id="forward" class="button" onclick="sendCommand('forward')">Forward</div>
+                <div id="backward" class="button" onclick="sendCommand('backward')">Backward</div>
+                <div id="left" class="button" onclick="sendCommand('yaw_left')">Left</div>
+                <div id="right" class="button" onclick="sendCommand('yaw_right')">Right</div>
+                <div id="pitch_up" class="button" onclick="sendCommand('pitch_up')">Pitch Up</div>
+                <div id="pitch_down" class="button" onclick="sendCommand('pitch_down')">Pitch Down</div>
+            </div>
+        </div> -->
+        <div class="video-container">
+            <!-- <img id="video" src="https://videos.pexels.com/video-files/3209828/3209828-uhd_3840_2160_25fps.mp4" alt="ROV Camera Feed"> -->
+            <img id="video" src="{{ url_for('video_feed') }}" alt="ROV Camera Feed">
+        </div>
+        <!-- <div class="video-container">
+            <img id="video" src="{{ url_for('video_feed_crack') }}" alt="ROV Camera Feed">
+        </div> -->
+
+        <div class="stat">
+            <h3 >Vehicle Stats</h3>
+            <p>Hull Temperature (degree): 35.7</p> <br/>
+            <p>Hull humidity: 40 %</p> <br/>
+            
+        </div>
+    </div>
+
+    <script>
+        function sendCommand(command) {
+            fetch('/control', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({
+                    command: command
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log(data); // Log response from server
+            })
+            .catch(error => {
+                console.error('There was an error with the fetch operation:', error);
+            });
+        }
+    </script>
+</body>
+</html>

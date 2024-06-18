@@ -7,5 +7,13 @@
         "/home/niran/eyantra_23/hb_task_2_ws/install/hb_task2a/lib/python3.10/site-packages",
         "/opt/ros/humble/lib/python3.10/site-packages",
         "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/niran/eyantra_23/stage_2_ws/install/hb_1037/lib/python3.10/site-packages",
+        "/home/niran/eyantra_23/hb_task_2_ws/install/my_robot_interfaces/local/lib/python3.10/dist-packages",
+        "/home/niran/eyantra_23/hb_task_2_ws/install/hb_task2b/lib/python3.10/site-packages",
+        "/home/niran/eyantra_23/hb_task_2_ws/install/hb_task2a/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
     ]
 }

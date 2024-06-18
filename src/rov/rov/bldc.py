@@ -3,9 +3,11 @@ from rclpy.node import Node
 from geometry_msgs.msg import Twist
 from std_msgs.msg import String
 from cstm_msgs.msg import Thruster
-# from adafruit_servokit import ServoKit
-import time
+from adafruit_servokit import ServoKit
+import time,math
 
+def constrain(val, min_val, max_val):
+    return math.ceil(min(max_val, max(min_val, val)))
 
 # kit = ServoKit(channels=16)
 # thruster_F  = kit.servo[0]
@@ -32,18 +34,18 @@ class BldcPWMNode(Node):
         self.bldcR = 0
         self.bldcL= 0
 
-        self.thruster_F  = DebugThruster()
-        self.thruster_R  = DebugThruster()
-        self.thruster_L  = DebugThruster()
-        # self.kit = ServoKit(channels=16)
-        # self.thruster_F  = self.kit.servo[0]
-        # self.thruster_R  = self.kit.servo[1]
-        # self.thruster_L  = self.kit.servo[2]
+        # self.thruster_F  = DebugThruster()
+        # self.thruster_R  = DebugThruster()
+        # self.thruster_L  = DebugThruster()
+        self.kit = ServoKit(channels=16)
+        self.thruster_F  = self.kit.servo[2]
+        self.thruster_R  = self.kit.servo[0]
+        self.thruster_L  = self.kit.servo[1]
 
     def controlHardware(self):
-        self.thruster_F.angle = self.bldcF*1.8
-        self.thruster_R.angle = self.bldcR*1.8
-        self.thruster_L.angle = self.bldcL*1.8
+        self.thruster_F.angle = constrain(self.bldcF,0,180)
+        self.thruster_R.angle = constrain(self.bldcR,0,180)
+        self.thruster_L.angle = constrain(self.bldcL,0,180)
         self.get_logger().info(f'F: {self.thruster_F.angle} R: {self.thruster_R.angle} L: {self.thruster_L.angle}')
 
     # def controlHardware(self):
@@ -80,39 +82,39 @@ class BldcPWMNode(Node):
         self.bldcF = msg.thruster_f
         self.bldcR = msg.thruster_r
         self.bldcL = msg.thruster_l
-        # self.calc_thruster_pwm()
+        self.calc_thruster_pwm()
         self.controlHardware()
         # self.get_logger().info(f'F: {self.bldcF} R: {self.bldcR} L: {self.bldcL}')
     
-    # def calc_thruster_pwm(self):
-    #     self.bldcF_s = self.bldcF*1.8
-    #     self.bldcR_s = self.bldcR*1.8
-    #     self.bldcL = self.bldcL*1.8
-    #     # self.get_logger().info(f'F: {self.bldcF} R: {self.bldcR} L: {self.bldcL}')
+    def calc_thruster_pwm(self):
+        self.bldcF = self.bldcF*18
+        self.bldcR = self.bldcR*10
+        self.bldcL = self.bldcL*10
+        # self.get_logger().info(f'F: {self.bldcF} R: {self.bldcR} L: {self.bldcL}') 
 
     
     def calibration(self):
         pass
-    #     # Calibration sequence for the ESC
-    #     print("Disconnect power from the ESC, then press Enter to continue.")
-    #     # input()  # Wait for user confirmation
-    #     time.sleep(2)
-    #     print("....")
-    #     # Set the ESC to maximum throttle
-    #     thruster_F.angle = 180
-    #     thruster_R.angle = 180
-    #     thruster_L.angle = 180
-    #     time.sleep(5)
-    #     print("Connect power to the ESC, wait for initialization, then press Enter.")
-    #     # input()  # Wait for user confirmation
-    #     time.sleep(2)
-    #     print("....")
-    #     # Set the ESC to minimum throttle
-    #     thruster_F.angle = 0
-    #     thruster_R.angle = 0
-    #     thruster_L.angle = 0
-    #     time.sleep(5)
-    #     print("Calibration complete. You can now control the speed of the ESC.")
+        # Calibration sequence for the ESC
+        print("Disconnect power from the ESC, then press Enter to continue.")
+        # input()  # Wait for user confirmation
+        time.sleep(2)
+        print("....")
+        # Set the ESC to maximum throttle
+        self.thruster_F.angle = 180
+        self.thruster_R.angle = 180
+        self.thruster_L.angle = 180
+        time.sleep(5)
+        print("Connect power to the ESC, wait for initialization, then press Enter.")
+        # input()  # Wait for user confirmation
+        time.sleep(2)
+        print("....")
+        # Set the ESC to minimum throttle
+        self.thruster_F.angle = 0
+        self.thruster_R.angle = 0
+        self.thruster_L.angle = 0
+        time.sleep(5)
+        print("Calibration complete. You can now control the speed of the ESC.")
 
 
 
@@ -121,7 +123,7 @@ def main(args=None):
 
     bldc_pwm = BldcPWMNode()
     # run calibration
-    bldc_pwm.calibration()
+    # bldc_pwm.calibration()
 
     rclpy.spin(bldc_pwm)
 
