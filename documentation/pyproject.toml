@@ -1,3 +1,8 @@
 [build-system]
 requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.buildapi"
+
+[project]
+name = "Underwater-ROV"
+authors = [{name = "Niran S Narayanan", email = "nirans2002@gmail.com"}]
+dynamic = ["version", "description"]
