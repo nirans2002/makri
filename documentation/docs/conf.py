@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = "Underwater ROV"
-copyright = "2024"
-author = "Niran S Narayanan"
+project = "Basic Sphinx Example Project"
+copyright = "2022, Read the Docs core team"
+author = "Read the Docs core team"
 
 
 # -- General configuration ---------------------------------------------------
@@ -28,7 +28,7 @@ author = "Niran S Narayanan"
 extensions = [
     "sphinx.ext.duration",
     "sphinx.ext.doctest",
-    # "sphinx.ext.autodoc",
+    "sphinx.ext.autodoc",
     "sphinx.ext.autosummary",
     "sphinx.ext.intersphinx",
     "myst_parser"
