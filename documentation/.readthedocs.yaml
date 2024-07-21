@@ -15,6 +15,9 @@ python:
   install:
     - requirements: documentation/requirements.txt
 
+# Build all formats
+formats: all
+
 # sphinx:
 #   builder: mkdocs
 #   configuration: documentation/mkdocs.yml
