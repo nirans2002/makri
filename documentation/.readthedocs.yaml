@@ -1,16 +1,20 @@
 # .readthedocs.yaml
-
+# Required
 version: 2
 
+# Set the version of Python and other tools you might need
 build:
   os: ubuntu-22.04
   tools:
     python: "3.10"
 
+mkdocs:
+  configuration: documentation/mkdocs.yml
+
 python:
   install:
     - requirements: documentation/requirements.txt
 
-sphinx:
-  builder: "mkdocs"
-  configuration: documentation/mkdocs.yml
+# sphinx:
+#   builder: mkdocs
+#   configuration: documentation/mkdocs.yml
